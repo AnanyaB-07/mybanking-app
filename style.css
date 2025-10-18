@@ -21,6 +21,7 @@ button {
   color: white;
   border: none;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 button:hover {
   background-color: #005A9E;
@@ -29,6 +30,19 @@ button:hover {
   width: 100%;
   max-width: 300px;
   margin: auto;
+}
+canvas {
+  display: block;
+  margin: 10px auto;
+}
+#history, #recipientLog {
+  max-height: 150px;
+  overflow-y: auto;
+  padding-left: 20px;
+}
+h1, h2, h3 {
+  color: #333;
+  margin-top: 20px;
 }
 @media (max-width: 600px) {
   .container {
