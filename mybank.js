@@ -167,3 +167,28 @@ window.onload = () => {
   loadTransactions();
   updateBalance();
 };
+const confirmPayment = confirm(`Pay ₹${amount} to ${recipient}?`);
+function updateRecipientLog(transaction) {
+  const log = document.getElementById("recipientLog");
+  const li = document.createElement("li");
+  li.innerText = `${transaction.timestamp}: Paid ₹${transaction.amount} to ${transaction.recipient}`;
+  log.appendChild(li);
+}
+function saveTransaction(transaction) {
+  let stored = JSON.parse(localStorage.getItem("transactions")) || [];
+  stored.push(transaction);
+  localStorage.setItem("transactions", JSON.stringify(stored));
+}
+
+function loadTransactions() {
+  const stored = JSON.parse(localStorage.getItem("transactions")) || [];
+  stored.forEach(tx => {
+    history.push(`Paid ₹${tx.amount} to ${tx.recipient}`);
+    updateRecipientLog(tx);
+  });
+  updateHistory();
+}
+window.onload = () => {
+  loadTransactions();
+  updateBalance();
+};
