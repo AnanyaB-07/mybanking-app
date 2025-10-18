@@ -1,85 +1,101 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MyBanking App</title>
-  <link rel="stylesheet" href="style.css">
-</<h3>Spending Overview</h3>
-<canvas id="spendingChart" width="400" height="200"></canvas>>
-<<h3>Spending Overview</h3>
-<canvas id="spendingChart" width="400" height="200"></canvas>>
+  <link rel="stylesheet" href="style.css" />
+  <!-- QR Code Generator -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+  <!-- QR Code Scanner -->
+  <script src="https://unpkg.com/html5-qrcode"></script>
+</head>
+<body>
   <div class="container">
     <h1>Welcome to MyBank</h1>
-    <input type="text" id="username" placeholder="Your name">
-    <input type="number" id="initialBalance" placeholder="Starting balance">
+    <input type="text" id="username" placeholder="Your name" />
+    <input type="number" id="initialBalance" placeholder="Starting balance" />
     <button onclick="createAccount()">Create Account</button>
 
     <h2 id="greeting"></h2>
     <p>Balance: ₹<span id="balance">0</span></p>
 
-    <input type="number" id="amount" placeholder="Amount">
+    <input type="number" id="amount" placeholder="Amount" />
     <button onclick="deposit()">Deposit</button>
     <button onclick="withdraw()">Withdraw</button>
 
     <h3>Transaction History</h3>
     <ul id="history"></ul>
+
+    <!-- QR Code Generator -->
+    <h3>Generate UPI QR Code</h3>
+    <input type="text" id="upiInput" placeholder="Enter UPI ID or payment link" />
+    <button onclick="generateQR()">Generate QR</button>
+    <div id="qrcode"></div>
+
+    <!-- QR Code Scanner -->
+    <h3>Scan QR to Pay</h3>
+    <button onclick="startScanner()">Start Scanner</button>
+    <div id="reader" style="width:300px;"></div>
+
+    <!-- Confirmation Button -->
+    <button onclick="qrDeposit()">I’ve scanned the QR</button>
+
+    <!-- Recipient Log -->
+    <h3>Recipient Log</h3>
+    <ul id="recipientLog"></ul>
+
+    <!-- Spending Chart Placeholder -->
+    <h3>Spending Overview</h3>
+    <canvas id="spendingChart" width="400" height="200"></canvas>
   </div>
+
+  <!-- Your banking logic -->
   <script src="bank.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js"></script>
-  <div id="qrContainer">
-  <h3>Scan to Deposit ₹100</h3>
-  <canvas id="qrCode"></canvas>
-</div>
-  <button onclick="qrDeposit()">I’ve scanned the QR</button>
-  <script src="https://unpkg.com/html5-qrcode"></script>
-  <div id="reader" style="width:300px;"></div>
-  <button onclick="startScanner()">Scan QR with Webcam</button>
-  
+
+  <!-- QR Code Generator Function -->
+  <script>
+    function generateQR() {
+      const qrData = document.getElementById("upiInput").value;
+      document.getElementById("qrcode").innerHTML = "";
+      new QRCode(document.getElementById("qrcode"), {
+        text: qrData,
+        width: 128,
+        height: 128
+      });
+    }
+  </script>
+
+  <!-- QR Scanner Function -->
+  <script>
+    function onScanSuccess(decodedText, decodedResult) {
+      alert("Scanned: " + decodedText);
+      const log = document.getElementById("recipientLog");
+      const entry = document.createElement("li");
+      entry.textContent = "Scanned UPI: " + decodedText;
+      log.appendChild(entry);
+    }
+
+    function startScanner() {
+      const html5QrCode = new Html5Qrcode("reader");
+      html5QrCode.start(
+        { facingMode: "environment" },
+        { fps: 10, qrbox: 250 },
+        onScanSuccess
+      );
+    }
+
+    function qrDeposit() {
+      const balanceEl = document.getElementById("balance");
+      let currentBalance = parseFloat(balanceEl.textContent);
+      currentBalance += 100;
+      balanceEl.textContent = currentBalance.toFixed(2);
+
+      const history = document.getElementById("history");
+      const entry = document.createElement("li");
+      entry.textContent = "Deposited ₹100 via QR scan";
+      history.appendChild(entry);
+    }
+  </script>
 </body>
 </html>
-<script src="https://unpkg.com/html5-qrcode"></script>
-<div id="reader" style="width:300px;"></div>
-<button onclick="startScanner()">Scan QR to Pay</button>
-<h3>Recipient Log</h3>
-<ul id="recipientLog"></ul>
-<h3>Recipient Log</h3>
-<ul id="recipientLog"></ul>
-<div id="reader" style="width:300px;"></div>
-<button onclick="startScanner()">Scan QR to Pay</button>
-<canvas id="qrCode"></canvas>
-<div id="qrCode"></div>
-<script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js"></script>
-
-  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
-  <div id="qrcode"></div>
-  <input type="text" id="upiInput" placeholder="Enter UPI ID or payment link">
-<button onclick="generateQR()">Generate QR</button>
-
-<script>
-  function generateQR() {
-    const qrData = document.getElementById("upiInput").value;
-    document.getElementById("qrcode").innerHTML = ""; // Clear previous QR
-    new QRCode(document.getElementById("qrcode"), {
-      text: qrData,
-      width: 128,
-      height: 128
-    });
-  }
-</script>
-<script src="https://unpkg.com/html5-qrcode"></script>
-<div id="reader" style="width:300px;"></div>
-<script>
-  function onScanSuccess(decodedText, decodedResult) {
-    alert("Scanned: " + decodedText);
-    // You can redirect or autofill payment form here
-  }
-
-  const html5QrCode = new Html5Qrcode("reader");
-  html5QrCode.start(
-    { facingMode: "environment" }, // Rear camera
-    {
-      fps: 10,
-      qrbox: 250
-    },
-    onScanSuccess
-  );
-</script>
