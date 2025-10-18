@@ -1,0 +1,15 @@
+<form onsubmit="handleDeposit(event)">
+  <input type="number" id="depositAmount" placeholder="Enter amount">
+  <button type="submit">Deposit</button>
+</form>
+<script>
+function handleDeposit(e) {
+  e.preventDefault();
+  const amount = parseFloat(document.getElementById("depositAmount").value);
+  localStorage.setItem("pendingDeposit", amount);
+  window.location.href = "index.html";
+}
+</script>
+<input type="number" id="qrAmount" placeholder="Amount for QR">
+<button onclick="generateQR()">Generate QR</button>
+<canvas id="qrCode"></canvas>
