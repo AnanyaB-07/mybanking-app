@@ -232,3 +232,12 @@ window.onload = () => {
   loadSpendingData();
   updateBalance();
 };
+window.onload = () => {
+  QRCode.toCanvas(document.getElementById("qrCode"), "deposit:100", function (error) {
+    if (error) console.error(error);
+  });
+};
+new QRCode(document.getElementById("qrCode"), "deposit:100");
+document.addEventListener("DOMContentLoaded", function () {
+  QRCode.toCanvas(document.getElementById("qrCode"), "deposit:100");
+});
