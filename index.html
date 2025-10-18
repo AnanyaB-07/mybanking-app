@@ -22,5 +22,15 @@
     <ul id="history"></ul>
   </div>
   <script src="bank.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js"></script>
+  <div id="qrContainer">
+  <h3>Scan to Deposit ₹100</h3>
+  <canvas id="qrCode"></canvas>
+</div>
+  <button onclick="qrDeposit()">I’ve scanned the QR</button>
+  <script src="https://unpkg.com/html5-qrcode"></script>
+  <div id="reader" style="width:300px;"></div>
+  <button onclick="startScanner()">Scan QR with Webcam</button>
+  
 </body>
 </html>
