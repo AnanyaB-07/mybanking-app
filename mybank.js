@@ -192,3 +192,43 @@ window.onload = () => {
   loadTransactions();
   updateBalance();
 };
+let spendingData = [];
+spendingData.push({ recipient, amount });
+updateChart();
+function updateChart() {
+  const labels = spendingData.map(tx => tx.recipient);
+  const data = spendingData.map(tx => tx.amount);
+
+  const ctx = document.getElementById("spendingChart").getContext("2d");
+  new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Amount Paid (₹)',
+        data: data,
+        backgroundColor: '#0078D4'
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: { beginAtZero: true }
+      }
+    }
+  });
+}
+function saveSpendingData() {
+  localStorage.setItem("spendingData", JSON.stringify(spendingData));
+}
+
+function loadSpendingData() {
+  const stored = JSON.parse(localStorage.getItem("spendingData")) || [];
+  spendingData = stored;
+  updateChart();
+}
+window.onload = () => {
+  loadTransactions();
+  loadSpendingData();
+  updateBalance();
+};
