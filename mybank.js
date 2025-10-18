@@ -2,7 +2,6 @@ let balance = 0;
 let history = [];
 let spendingData = [];
 
-// Create account
 function createAccount() {
   const name = document.getElementById("username").value;
   balance = parseFloat(document.getElementById("initialBalance").value);
@@ -10,7 +9,6 @@ function createAccount() {
   updateBalance();
 }
 
-// Deposit
 function deposit() {
   const amount = parseFloat(document.getElementById("amount").value);
   balance += amount;
@@ -19,7 +17,6 @@ function deposit() {
   updateHistory();
 }
 
-// Withdraw
 function withdraw() {
   const amount = parseFloat(document.getElementById("amount").value);
   if (amount > balance) {
@@ -32,12 +29,10 @@ function withdraw() {
   updateHistory();
 }
 
-// Update balance display
 function updateBalance() {
   document.getElementById("balance").innerText = balance.toFixed(2);
 }
 
-// Update transaction history
 function updateHistory() {
   const list = document.getElementById("history");
   list.innerHTML = "";
@@ -48,14 +43,12 @@ function updateHistory() {
   });
 }
 
-// Generate QR code for deposit
 function generateQR() {
   const amount = document.getElementById("qrAmount").value;
   const qrData = `deposit:${amount}`;
   QRCode.toCanvas(document.getElementById("qrCode"), qrData);
 }
 
-// Start QR scanner
 function startScanner() {
   const qrScanner = new Html5Qrcode("reader");
   qrScanner.start(
@@ -104,7 +97,6 @@ function startScanner() {
   );
 }
 
-// Update recipient log
 function updateRecipientLog(transaction) {
   const log = document.getElementById("recipientLog");
   const li = document.createElement("li");
@@ -112,14 +104,12 @@ function updateRecipientLog(transaction) {
   log.appendChild(li);
 }
 
-// Save transaction to localStorage
 function saveTransaction(transaction) {
   let stored = JSON.parse(localStorage.getItem("transactions")) || [];
   stored.push(transaction);
   localStorage.setItem("transactions", JSON.stringify(stored));
 }
 
-// Load transactions from localStorage
 function loadTransactions() {
   const stored = JSON.parse(localStorage.getItem("transactions")) || [];
   stored.forEach(tx => {
@@ -130,7 +120,6 @@ function loadTransactions() {
   updateHistory();
 }
 
-// Chart visualization
 function updateChart() {
   const labels = spendingData.map(tx => tx.recipient);
   const data = spendingData.map(tx => tx.amount);
@@ -154,19 +143,16 @@ function updateChart() {
   });
 }
 
-// Load spending data
 function loadSpendingData() {
   const stored = JSON.parse(localStorage.getItem("spendingData")) || [];
   spendingData = stored;
   updateChart();
 }
 
-// Save spending data
 function saveSpendingData() {
   localStorage.setItem("spendingData", JSON.stringify(spendingData));
 }
 
-// On page load
 window.onload = () => {
   loadTransactions();
   loadSpendingData();
