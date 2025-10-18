@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Banking App</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    .container { max-width: 400px; margin: auto; }
+    input, button { margin: 5px 0; width: 100%; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Welcome to My Bank</h2>
+    <input type="text" id="username" placeholder="Enter your name" />
+    <input type="number" id="initialBalance" placeholder="Starting balance" />
+    <button onclick="createAccount()">Create Account</button>
+
+    <h3 id="greeting"></h3>
+    <p>Balance: ₹<span id="balance">0</span></p>
+
+    <input type="number" id="amount" placeholder="Amount" />
+    <button onclick="deposit()">Deposit</button>
+    <button onclick="withdraw()">Withdraw</button>
+
+    <h4>Transaction History</h4>
+    <ul id="history"></ul>
+  </div>
+
+  <script src="bank.js"></script>
+</body>
+</html>
