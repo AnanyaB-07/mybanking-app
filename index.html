@@ -48,3 +48,38 @@
 <canvas id="qrCode"></canvas>
 <div id="qrCode"></div>
 <script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+  <div id="qrcode"></div>
+  <input type="text" id="upiInput" placeholder="Enter UPI ID or payment link">
+<button onclick="generateQR()">Generate QR</button>
+
+<script>
+  function generateQR() {
+    const qrData = document.getElementById("upiInput").value;
+    document.getElementById("qrcode").innerHTML = ""; // Clear previous QR
+    new QRCode(document.getElementById("qrcode"), {
+      text: qrData,
+      width: 128,
+      height: 128
+    });
+  }
+</script>
+<script src="https://unpkg.com/html5-qrcode"></script>
+<div id="reader" style="width:300px;"></div>
+<script>
+  function onScanSuccess(decodedText, decodedResult) {
+    alert("Scanned: " + decodedText);
+    // You can redirect or autofill payment form here
+  }
+
+  const html5QrCode = new Html5Qrcode("reader");
+  html5QrCode.start(
+    { facingMode: "environment" }, // Rear camera
+    {
+      fps: 10,
+      qrbox: 250
+    },
+    onScanSuccess
+  );
+</script>
